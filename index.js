@@ -22,7 +22,7 @@ async function getGuid(broadcasterLogin) {
 (async function () {
 if (process.env['JWT_TOKEN']) {
 	let jwtToken = process.env['JWT_TOKEN'];
-	let guids = process.env['STREAMELEMENTS_ACCOUNT_ID'] || 'me';
+	let guids = process.env['STREAMELEMENTS_ACCOUNT_IDS'] || 'me';
 	let textMessage = process.env['TEXT_MESSAGE'] || 'TEXT_MESSAGE not set!';
 	for (let guid of guids.split(',')) {
 		if (guid == 'me') // TODO: Maybe check if it is a twitch username/login
