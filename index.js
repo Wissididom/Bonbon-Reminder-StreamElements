@@ -8,7 +8,7 @@ function isTwitchLoginname(str) {
 	return /^[A-Za-z0-9_]{4,25}$/.test(str);
 }
 
-async function getGuid(broadcasterLogin) {
+async function getGuid(jwtToken, broadcasterLogin) {
 	return fetch(`https://api.streamelements.com/kappa/v2/channels/${broadcasterLogin}`, {
 		headers: {
 			'Accept': 'application/json',
@@ -16,10 +16,10 @@ async function getGuid(broadcasterLogin) {
 			'Content-Type': 'application/json'
 		}
 	}).then(res => {
-		console.log(`channels/${login}: Response-Code ${res.status}`);
+		console.log(`channels/${broadcasterLogin}: Response-Code ${res.status}`);
 		return res.json();
 	}).then(data => {
-		console.log(`channels/${login}: ${JSON.stringify(data)}`);
+		console.log(`channels/${broadcasterLogin}: ${JSON.stringify(data)}`);
 		return data._id;
 	}).catch(err => {
 		console.log(`Error getting User Guid: ${err}`);
@@ -33,12 +33,12 @@ if (process.env['JWT_TOKEN']) {
 	let textMessage = process.env['TEXT_MESSAGE'] || 'TEXT_MESSAGE not set!';
 	for (let guid of guids.split(',')) {
 		if (guid == 'me')
-			guid = await getGuid(guid);
+			guid = await getGuid(jwtToken, guid);
 		if (!isStreamElementsAccountId(guid)) {
 			console.warn(`${guid} is not a valid StreamElements Account ID!`);
 			if (isTwitchLoginname(guid.toLowerCase())) {
 				console.log(`Attempting to load the StreamElements Account ID from the Twitch login name!`);
-				guid = await getGuid(guid);
+				guid = await getGuid(jwtToken, guid);
 			} else {
 				console.warn(`${guid} is not a Twitch login name either! Ignoring Account!`);
 				continue;
