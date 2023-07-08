@@ -1,7 +1,14 @@
 require('dotenv').config();
 
+function isStreamElementsAccountId(str) {
+	return /^[a-fA-F0-9]{24}$/.test(str);
+}
+
+function isTwitchLoginname(str) {
+	return /^[A-Za-z0-9_]{4,25}$/.test(str);
+}
+
 async function getGuid(broadcasterLogin) {
-	console.log(`getGuid:${broadcasterLogin}`);
 	return fetch(`https://api.streamelements.com/kappa/v2/channels/${broadcasterLogin}`, {
 		headers: {
 			'Accept': 'application/json',
@@ -25,9 +32,18 @@ if (process.env['JWT_TOKEN']) {
 	let guids = process.env['STREAMELEMENTS_ACCOUNT_IDS'] || 'me';
 	let textMessage = process.env['TEXT_MESSAGE'] || 'TEXT_MESSAGE not set!';
 	for (let guid of guids.split(',')) {
-		if (guid == 'me') // TODO: Maybe check if it is a twitch username/login
+		if (guid == 'me')
 			guid = await getGuid(guid);
-		console.log(`Guid:${guid}`);
+		if (!isStreamElementsId(guid)) {
+			console.warn(`${guid} is not a valid StreamElements Account ID!`);
+			if (isTwitchLoginname(guid.toLowerCase())) {
+				console.log(`Attempting to load the StreamElements Account ID from the Twitch login name!`);
+				guid = await getGuid(guid);
+			} else {
+				console.warn(`${guid} is not a Twitch login name either! Ignoring Account!`);
+				continue;
+			}
+		}
 		await fetch(`https://api.streamelements.com/kappa/v2/bot/${guid}/say`, {
 			method: 'POST',
 			headers: {
