@@ -1,19 +1,19 @@
 function isStreamElementsAccountId(str) {
-	return /^[a-fA-F0-9]{24}$/.test(str);
+  return /^[a-fA-F0-9]{24}$/.test(str);
 }
 
 function isTwitchLoginName(str) {
-	return /^[A-Za-z0-9_]{4,25}$/.test(str);
+  return /^[A-Za-z0-9_]{4,25}$/.test(str);
 }
 
 function identifyString(str) {
-	if (isStreamElementsAccountId(str)) {
-		return "StreamElements Account ID";
-	}
-	if (isTwitchLoginName(str)) {
-		return "Twitch login name";
-	}
-	return "Unknown"
+  if (isStreamElementsAccountId(str)) {
+    return "StreamElements Account ID";
+  }
+  if (isTwitchLoginName(str)) {
+    return "Twitch login name";
+  }
+  return "Unknown";
 }
 
 const string1 = "mytwitchusername123";
