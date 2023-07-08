@@ -34,7 +34,7 @@ if (process.env['JWT_TOKEN']) {
 	for (let guid of guids.split(',')) {
 		if (guid == 'me')
 			guid = await getGuid(guid);
-		if (!isStreamElementsId(guid)) {
+		if (!isStreamElementsAccountId(guid)) {
 			console.warn(`${guid} is not a valid StreamElements Account ID!`);
 			if (isTwitchLoginname(guid.toLowerCase())) {
 				console.log(`Attempting to load the StreamElements Account ID from the Twitch login name!`);
