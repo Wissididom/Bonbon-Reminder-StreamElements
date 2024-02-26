@@ -13,6 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Install dependencies
-        run: npm i
+        run: npm ci
       - name: Check formatting using prettier
         run: npm run check-format
