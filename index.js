@@ -1,4 +1,4 @@
-require("dotenv").config();
+import "dotenv/config";
 
 function isStreamElementsAccountId(str) {
   return /^[a-fA-F0-9]{24}$/.test(str);
