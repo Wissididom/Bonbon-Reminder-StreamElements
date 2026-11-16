@@ -12,9 +12,6 @@
   },
   "author": "Wissididom",
   "license": "MIT",
-  "dependencies": {
-    "dotenv": "^18.0.10"
-  },
   "devDependencies": {
     "prettier": "^3.10.1"
   }
